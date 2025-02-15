@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riddle 2</title>
+    <script>
+        function checkAnswer() {
+            const answer = document.getElementById("answer").value.toLowerCase().trim();
+            const correctAnswer = "cathedral"; // Change this for each riddle
+            
+            if (answer === correctAnswer) {
+                window.location.href = "riddle3.html";
+            } else {
+                alert("Incorrect answer. Try again!");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Riddle 2</h1>
+    <p>I have five towers, standing tall,<br>
+       Witnessing centuries, I've seen it all.<br>
+       What am I?</p>
+
+    <input type="text" id="answer" placeholder="Enter your answer">
+    <button onclick="checkAnswer()">Submit</button>
+</body>
+</html>
