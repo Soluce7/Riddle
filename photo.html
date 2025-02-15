@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soluce race</title>
       <link rel="stylesheet" href="style.css">
+     <script>
+        function checkAnswer() {
+            const answer = document.getElementById("answer").value.toLowerCase().trim();
+            const correctAnswer = "tournai"; // Change this for each riddle
+            
+            if (answer === correctAnswer) {
+                window.location.href = "riddle2.html"; // Move to next riddle
+            } else {
+                alert("Mauvaise réponse, réessayez!");
+            }
+        }
+    </script>
 </head>
 <body>
     
@@ -12,7 +24,7 @@
     <p>Retournez à l'endroit du quel cette photo a été prise, mais élargissez l'objectif!</p>
     <p>Envoyez la moi par WhatsApp et je vous donnerai le code!</p>
 
-    <input type="text" id="answer" placeholder="Orteil">
+    <input type="text" id="answer" placeholder="1234">
     <button onclick="checkAnswer()">Submit</button>
 
   <img src="image.jpg" alt="Clue Image" style="max-width: 100%; height: auto;">
