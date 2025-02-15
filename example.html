@@ -11,12 +11,21 @@
             padding: 20px;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: auto;
             background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .bank {
+            display: inline-block;
+            width: 45%;
+            vertical-align: top;
+            padding: 10px;
+            background: #e0e0e0;
+            margin: 10px;
+            border-radius: 8px;
         }
         button {
             margin: 5px;
@@ -29,13 +38,26 @@
 <body>
     <div class="container">
         <h1>River Crossing Enigma</h1>
-        <p>The farmer needs to move a wolf, a goat, and a cabbage across the river using a boat. The boat can only carry the farmer and one other item at a time. The farmer cannot leave the wolf alone with the goat, nor the goat alone with the cabbage.</p>
-        <div id="status"></div>
+        <p>The farmer needs to move a wolf, a goat, and a cabbage across the river using a boat. The boat can only carry the farmer and one other item at a time, or the farmer can sail alone. The farmer cannot leave the wolf alone with the goat, nor the goat alone with the cabbage.</p>
+        <div class="bank" id="left-bank">
+            <h3>Left Bank</h3>
+            <div id="left"></div>
+        </div>
+        <div class="bank" id="right-bank">
+            <h3>Right Bank</h3>
+            <div id="right"></div>
+        </div>
         <div id="buttons">
             <button onclick="move('wolf')">Take Wolf</button>
             <button onclick="move('goat')">Take Goat</button>
             <button onclick="move('cabbage')">Take Cabbage</button>
+            <button onclick="move('farmer')">Sail Alone</button>
         </div>
+        <button onclick="pass()">Pass</button>
+        <div id="countdown" style="display: none;">
+            <p>Waiting for <span id="countdown-timer">10</span> seconds...</p>
+        </div>
+        <button id="next-riddle" style="display: none;" onclick="nextRiddle()">Next Riddle</button>
         <button onclick="reset()">Reset</button>
     </div>
 
@@ -46,10 +68,8 @@
         };
 
         function updateStatus() {
-            document.getElementById('status').innerText = `
-                Left bank: ${state.left.join(', ')}
-                Right bank: ${state.right.join(', ')}
-            `;
+            document.getElementById('left').innerText = state.left.join(', ');
+            document.getElementById('right').innerText = state.right.join(', ');
         }
 
         function move(item) {
@@ -59,7 +79,7 @@
             if (state[fromBank].includes(item) && state[fromBank].includes('farmer')) {
                 state[fromBank] = state[fromBank].filter(x => x !== item && x !== 'farmer');
                 state[toBank].push(item, 'farmer');
-            } else if (state[fromBank].includes('farmer')) {
+            } else if (item === 'farmer' && state[fromBank].includes('farmer')) {
                 state[fromBank] = state[fromBank].filter(x => x !== 'farmer');
                 state[toBank].push('farmer');
             }
@@ -83,7 +103,7 @@
                 reset();
             } else if (state.right.includes('wolf') && state.right.includes('goat') && state.right.includes('cabbage') && state.right.includes('farmer')) {
                 alert("Congratulations! You've solved the enigma.");
-                reset();
+                nextRiddle();
             }
         }
 
@@ -91,6 +111,24 @@
             state.left = ['wolf', 'goat', 'cabbage', 'farmer'];
             state.right = [];
             updateStatus();
+        }
+
+        function pass() {
+            document.getElementById('countdown').style.display = 'block';
+            let timer = 10;
+            const countdownTimer = setInterval(() => {
+                document.getElementById('countdown-timer').innerText = timer;
+                timer--;
+                if (timer < 0) {
+                    clearInterval(countdownTimer);
+                    document.getElementById('countdown').style.display = 'none';
+                    document.getElementById('next-riddle').style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        function nextRiddle() {
+            window.location.href = 'riddle2.html';
         }
 
         window.onload = updateStatus;
