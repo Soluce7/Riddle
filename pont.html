@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riddle 1</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function checkAnswer() {
+            const answer = document.getElementById("answer").value.toLowerCase().trim();
+            const correctAnswer = "tournai"; // Change this for each riddle
+            
+            if (answer === correctAnswer) {
+                window.location.href = "riddle2.html"; // Move to next riddle
+            } else {
+                alert("Mauvaise réponse, réessayez!");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Jeu dans le jeu!</h1>
+    <p>Vous pouvez décider de passer cette énigme,<br>
+       Ou décider de la résoudre!<br>
+      Si vous réussissez, 10 minutes seront déduites de votre temps final!</p>
+  
+
+    <input type="text" id="answer" placeholder="Enter your answer">
+    <button onclick="checkAnswer()">Submit</button>
+</body>
+</html>
