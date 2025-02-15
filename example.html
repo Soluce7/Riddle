@@ -56,4 +56,82 @@
         <button onclick="pass()">Pass</button>
         <div id="countdown" style="display: none;">
             <p>Waiting for <span id="countdown-timer">10</span> seconds...</p>
-        </div
+        </div>
+        <button id="next-riddle" style="display: none;" onclick="nextRiddle()">Next Riddle</button>
+        <button onclick="reset()">Reset</button>
+    </div>
+
+    <script>
+        const state = {
+            left: ['wolf', 'goat', 'cabbage', 'farmer'],
+            right: []
+        };
+
+        function updateStatus() {
+            document.getElementById('left').innerText = state.left.join(', ');
+            document.getElementById('right').innerText = state.right.join(', ');
+        }
+
+        function move(item) {
+            const fromBank = state.left.includes('farmer') ? 'left' : 'right';
+            const toBank = fromBank === 'left' ? 'right' : 'left';
+
+            if (item !== 'farmer' && state[fromBank].includes(item) && state[fromBank].includes('farmer')) {
+                state[fromBank] = state[fromBank].filter(x => x !== item && x !== 'farmer');
+                state[toBank].push(item, 'farmer');
+            } else if (item === 'farmer' && state[fromBank].includes('farmer')) {
+                state[fromBank] = state[fromBank].filter(x => x !== 'farmer');
+                state[toBank].push('farmer');
+            }
+
+            checkConditions();
+            updateStatus();
+        }
+
+        function checkConditions() {
+            if (state.left.includes('wolf') && state.left.includes('goat') && !state.left.includes('farmer')) {
+                alert("The wolf ate the goat!");
+                reset();
+            } else if (state.right.includes('wolf') && state.right.includes('goat') && !state.right.includes('farmer')) {
+                alert("The wolf ate the goat!");
+                reset();
+            } else if (state.left.includes('goat') && state.left.includes('cabbage') && !state.left.includes('farmer')) {
+                alert("The goat ate the cabbage!");
+                reset();
+            } else if (state.right.includes('goat') && state.right.includes('cabbage') && !state.right.includes('farmer')) {
+                alert("The goat ate the cabbage!");
+                reset();
+            } else if (state.right.includes('wolf') && state.right.includes('goat') && state.right.includes('cabbage') && state.right.includes('farmer')) {
+                alert("Congratulations! You've solved the enigma.");
+                nextRiddle();
+            }
+        }
+
+        function reset() {
+            state.left = ['wolf', 'goat', 'cabbage', 'farmer'];
+            state.right = [];
+            updateStatus();
+        }
+
+        function pass() {
+            document.getElementById('countdown').style.display = 'block';
+            let timer = 10;
+            const countdownTimer = setInterval(() => {
+                document.getElementById('countdown-timer').innerText = timer;
+                timer--;
+                if (timer < 0) {
+                    clearInterval(countdownTimer);
+                    document.getElementById('countdown').style.display = 'none';
+                    document.getElementById('next-riddle').style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        function nextRiddle() {
+            window.location.href = 'riddle2.html';
+        }
+
+        window.onload = updateStatus;
+    </script>
+</body>
+</html>
