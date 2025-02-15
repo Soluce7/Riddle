@@ -5,24 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soluce race</title>
       <link rel="stylesheet" href="style.css">
-    <script>
-        function checkAnswer() {
-            const answer = document.getElementById("answer").value.toLowerCase().trim();
-            const correctAnswer = "bras"; // Change this for each riddle
-            
-            if (answer === correctAnswer) {
-                window.location.href = "photo.html";
-            } else {
-                alert("Incorrect answer. Try again!");
-            }
-        }
-    </script>
 </head>
 <body>
-    <h1>Riddle 2</h1>
-    <p>Trouvez la dame au nom d'homme<br>
-       Les légendes racontent qu'elle est blessée<br>
-       Mais où?</p>
+    
+    <p>Piètre artiste, j'ai voulu lui dresser un portrait, mais j'ai oublié de prendre la ville dans l'objectif</p>
+    <p>Retournez à l'endroit du quel cette photo a été prise, mais élargissez l'objectif!</p>
+    <p>Envoyez la moi par WhatsApp et je vous donnerai le code!</p>
 
     <input type="text" id="answer" placeholder="Orteil">
     <button onclick="checkAnswer()">Submit</button>
