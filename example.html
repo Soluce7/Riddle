@@ -3,35 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Background Image Example</title>
+    <title>River Crossing Enigma</title>
     <style>
         body {
-            background-image: url('image2.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-shadow: 1px 1px 2px black;
-        }
-
-        .content {
-            background: rgba(0, 0, 0, 0.5); /* Optional: Adds a semi-transparent background to the text */
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
             padding: 20px;
-            border-radius: 10px;
-            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="content">
-        <h1>Hello, World!</h1>
-        <p>This is an example of a website with a background image.</p>
+    <div class="container">
+        <h1>River Crossing Enigma</h1>
+        <p>The farmer needs to move a wolf, a goat, and a cabbage across the river using a boat. The boat can only carry the farmer and one other item at a time. The farmer cannot leave the wolf alone with the goat, nor the goat alone with the cabbage.</p>
+        <div id="status"></div>
+        <div id="buttons">
+            <button onclick="move('wolf')">Take Wolf</button>
+            <button onclick="move('goat')">Take Goat</button>
+            <button onclick="move('cabbage')">Take Cabbage</button>
+        </div>
+        <button onclick="reset()">Reset</button>
     </div>
+
+    <script>
+        const state = {
+            left: ['wolf', 'goat', 'cabbage', 'farmer'],
+            right: []
+        };
+
+        function updateStatus() {
+            document.getElementById('status').innerText = `
+                Left bank: ${state.left.join(', ')}
+                Right bank: ${state.right.join(', ')}
+            `;
+        }
+
+        function move(item) {
+            const fromBank = state.left.includes(item) && state.left.includes('farmer') ? 'left' : 'right';
+            const toBank = fromBank === 'left' ? 'right' : 'left';
+
+            if (state[fromBank].includes(item) && state[fromBank].includes('farmer')) {
+                state[fromBank] = state[fromBank].filter(x => x !== item && x !== 'farmer');
+                state[toBank].push(item, 'farmer');
+            } else if (state[fromBank].includes('farmer')) {
+                state[fromBank] = state[fromBank].filter(x => x !== 'farmer');
+                state[toBank].push('farmer');
+            }
+
+            checkConditions();
+            updateStatus();
+        }
+
+        function checkConditions() {
+            if (state.left.includes('wolf') && state.left.includes('goat') && !state.left.includes('farmer')) {
+                alert("The wolf ate the goat!");
+                reset();
+            } else if (state.right.includes('wolf') && state.right.includes('goat') && !state.right.includes('farmer')) {
+                alert("The wolf ate the goat!");
+                reset();
+            } else if (state.left.includes('goat') && state.left.includes('cabbage') && !state.left.includes('farmer')) {
+                alert("The goat ate the cabbage!");
+                reset();
+            } else if (state.right.includes('goat') && state.right.includes('cabbage') && !state.right.includes('farmer')) {
+                alert("The goat ate the cabbage!");
+                reset();
+            } else if (state.right.includes('wolf') && state.right.includes('goat') && state.right.includes('cabbage') && state.right.includes('farmer')) {
+                alert("Congratulations! You've solved the enigma.");
+                reset();
+            }
+        }
+
+        function reset() {
+            state.left = ['wolf', 'goat', 'cabbage', 'farmer'];
+            state.right = [];
+            updateStatus();
+        }
+
+        window.onload = updateStatus;
+    </script>
 </body>
 </html>
